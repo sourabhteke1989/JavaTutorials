@@ -6,9 +6,13 @@
 - If "ClassMath" is implementing two interfaces "MathInterface" & "AnotherMathInterface", And both having same signature, then class "ClassMath" should provide implementation as multiple inheritance rule is broken. it will give compilation exception as "Duplicate default methods".
 
 
+- Consuming interface default methods using Class object
+     - We can call any default method using class object even in multi level interface inheritance, Default method will be called from interface from buttom to up way wherever its found.
+     
+
 - Consuming interface default methods using InterfaceName.super.methodName() syntax (Only for default methods)
-     - Class calling immediate implemented interface - **Allowed**
-     - Class calling default method of not immediate implemented interface but in multi inheretance. - **Not allowed**
+     - calling immediate implemented interface - **Allowed**
+     - calling default method of not immediate implemented interface but in multi inheretance. - **Not allowed**
 
 ```
 	@Override
