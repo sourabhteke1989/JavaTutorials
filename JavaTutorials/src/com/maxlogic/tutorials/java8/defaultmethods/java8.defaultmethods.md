@@ -7,8 +7,8 @@
 
 
 - Consuming interface default methods using InterfaceName.super.methodName() syntax (Only for default methods)
-     - Class calling immediate implemented interface - Yes allowed
-     - Class calling default method of not immediate implemented interface but in multi inheretance. - Not allowed.
+     - Class calling immediate implemented interface - **Allowed**
+     - Class calling default method of not immediate implemented interface but in multi inheretance. - **Not allowed**
 
 ```
 	@Override
