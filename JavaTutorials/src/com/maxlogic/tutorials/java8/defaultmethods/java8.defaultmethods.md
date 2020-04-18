@@ -11,7 +11,7 @@
      - Class calling default method of not immediate implemented interface but in multi inheretance. - Not allowed.
 
 ```
-   @Override
+	@Override
 	public double divide(int a, int b) {
 		return AnotherMathInterface.super.divide(a, b);
 	}
