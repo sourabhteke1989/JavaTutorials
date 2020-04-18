@@ -4,7 +4,8 @@
   
 ## Rules 
   - If "ClassMath" is implementing two interfaces "MathInterface" & "AnotherMathInterface", And both having same signature, then class "ClassMath" should provide implementation as multiple inheritance rule is broken. it will give compilation exception as "Duplicate default methods". So class can also call respective interface default method by using interface name with super as below.
-    E.g.
+    
+E.g.
       *@Override
 			*public double divide(int a, int b) {
 				*return AnotherMathInterface.super.divide(a, b);
