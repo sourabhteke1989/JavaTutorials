@@ -7,6 +7,6 @@ public class ClassicDateTimeExample {
 		//java.util.Date
 		Date date = new Date();
 		System.out.println("Simple date object:"+date);
-		date.get
+		//date.get
 	}
 }

@@ -11,6 +11,11 @@ public class ClassMath implements MathInterface, AnotherMathInterface{
 		return (a*b)+1;
 	}
 	
+	@Override
+	public double divide(int a, int b) {
+		return AnotherMathInterface.super.divide(a, b);
+	}
+
 	public static void main(String[] args) {
 		ClassMath cl = new ClassMath();
 		System.out.println("Sum:"+cl.sum(1, 2));
