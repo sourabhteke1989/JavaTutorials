@@ -1,0 +1,7 @@
+Cluster connect - 
+	mongo "mongodb+srv://sandbox-1ayxj.mongodb.net/test"  --username m001-student --password m001-mongodb-basics
+	
+Java Connection - 
+	mongodb+srv://m001-student:m001-mongodb-basics@sandbox-1ayxj.mongodb.net/test?retryWrites=true&w=majority
+	
+	

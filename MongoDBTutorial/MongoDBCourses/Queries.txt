@@ -1,0 +1,42 @@
+
+1. Given policyId : Get drivers under that policyId.
+
+db.Policy.aggregate([{$match : {"fields.Gid.DATA_VALUE" : "1"}}, {$unwind:{path:"$childRelationsInstances"}}, {$match:{"childRelationsInstances.relationMetadatId":"PolicyVehicle"}}, {$lookup:{from : "Vehicle", localField: "childRelationsInstances.childGid", foreignField: "fields.Gid.DATA_VALUE", as: "vehicles"}}, {$unwind:{path: "$vehicles"}}, { $replaceRoot: {newRoot: "$vehicles"}}, {$unwind:{path: "$childRelationsInstances"}}, {$match:{"childRelationsInstances.relationMetadatId" : "VehicleDriver"}}, {$lookup:{from : "Driver", localField: "childRelationsInstances.childGid", foreignField: "fields.Gid.DATA_VALUE", as: "drivers"}}, {$unwind:{path: "$drivers"}}, { $replaceRoot: {newRoot: "$drivers"}}, {$count: "records_found"} ]);
+
+2. Given policyId : Get drivers with name "XYZ".
+
+	Taking long time
+db.Policy.aggregate([{$match : {"fields.Gid.DATA_VALUE" : "1"}}, {$project : {"childRelationsInstances":1}}, {$unwind:{path:"$childRelationsInstances"}}, {$match:{"childRelationsInstances.relationMetadatId":"PolicyVehicle"}}, {$lookup:{from : "Vehicle", localField: "childRelationsInstances.childGid", foreignField: "fields.Gid.DATA_VALUE", as: "vehicles"}}, {$unwind:{path: "$vehicles"}}, { $replaceRoot: {newRoot: "$vehicles"}}, {$project : {"childRelationsInstances":1}}, {$unwind:{path: "$childRelationsInstances"}}, {$match:{"childRelationsInstances.relationMetadatId" : "VehicleDriver"}}, {$lookup:{from : "Driver", localField: "childRelationsInstances.childGid", foreignField: "fields.Gid.DATA_VALUE", as: "drivers"}}, {$unwind:{path: "$drivers"}}, { $replaceRoot: {newRoot: "$drivers"}}, {$match:{"fields.Name.DATA_VALUE" : "P_0_V_0_D_0"}}, {$count: "records_found"} ]);
+
+
+3. Given policyId : Get drivers under vehicle with Vin as "".
+
+db.Policy.aggregate([{$match : {"fields.Gid.DATA_VALUE" : "1"}}, {$unwind:{path:"$childRelationsInstances"}}, {$match:{"childRelationsInstances.relationMetadatId":"PolicyVehicle"}}, {$lookup:{from : "Vehicle", localField: "childRelationsInstances.childGid", foreignField: "fields.Gid.DATA_VALUE", as: "vehicles"}}, {$unwind:{path: "$vehicles"}}, { $replaceRoot: {newRoot: "$vehicles"}}, {$match : {"fields.Vin.DATA_VALUE" : "P_0_V_0"}}, {$unwind:{path: "$childRelationsInstances"}}, {$match:{"childRelationsInstances.relationMetadatId" : "VehicleDriver"}}, {$lookup:{from : "Driver", localField: "childRelationsInstances.childGid", foreignField: "fields.Gid.DATA_VALUE", as: "drivers"}}, {$unwind:{path: "$drivers"}}, { $replaceRoot: {newRoot: "$drivers"}}, {$count: "records_found"}]);
+
+4. Get all policies for specific driver.
+
+db.Driver.aggregate([{$match:{"fields.Name.DATA_VALUE" : "P_0_V_0_D_0"}}, {$unwind:{path:"$parentRelationsInstances"}}, {$match:{"parentRelationsInstances.relationMetadatId":"VehicleDriver"}}, {$lookup:{from : "Vehicle", localField: "parentRelationsInstances.parentGid", foreignField: "fields.Gid.DATA_VALUE", as: "vehicles"}}, {$unwind:{path: "$vehicles"}}, { $replaceRoot: {newRoot: "$vehicles"}}, {$unwind:{path: "$parentRelationsInstances"}}, {$match:{"parentRelationsInstances.relationMetadatId":"PolicyVehicle"}}, {$lookup:{from : "Policy", localField: "parentRelationsInstances.parentGid", foreignField: "fields.Gid.DATA_VALUE", as: "policies"}}, {$unwind:{path: "$policies"}}, { $replaceRoot: {newRoot: "$policies"}}, {$count: "records_found"}]);
+
+
+Indexes : -
+
+db.Policy.createIndex({"fields.Gid.DATA_VALUE":1});
+db.Policy.createIndex({"childRelationsInstances.childGid":1, "childRelationsInstances.relationMetadatId":1});
+db.Policy.createIndex({"parentRelationsInstances.parentGid":1, "parentRelationsInstances.relationMetadatId":1});
+
+db.Vehicle.createIndex({"fields.Gid.DATA_VALUE":1});
+db.Vehicle.createIndex({"childRelationsInstances.childGid":1, "childRelationsInstances.relationMetadatId":1});
+db.Vehicle.createIndex({"parentRelationsInstances.parentGid":1, "parentRelationsInstances.relationMetadatId":1});
+
+db.Driver.createIndex({"fields.Gid.DATA_VALUE":1});
+db.Driver.createIndex({"childRelationsInstances.childGid":1, "childRelationsInstances.relationMetadatId":1});
+db.Driver.createIndex({"parentRelationsInstances.parentGid":1, "parentRelationsInstances.relationMetadatId":1});
+
+Indexes for attribute pattern : - 
+
+db.Policy.createIndex({"fields.fn":1, "fields.dv":1});
+db.Vehicle.createIndex({"fields.fn":1, "fields.dv":1});
+db.Driver.createIndex({"fields.fn":1, "fields.dv":1});
+
+
+
