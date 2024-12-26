@@ -1,15 +1,15 @@
-[JavaTutorials](#JavaTutorials)
+[Java Tutorials](#JavaTutorials)
   - [Algorithms](#Algorithms)
     - [Searching](#Searching)
     - [Sorting](#Sorting)
   - [Design Patterns](#design-patterns)
-    - [Creational Patterns](#Creational Patterns)
-    - [Structural Patterns](#Structural Patterns)
-    - [Behavioral Patterns](#Behavioral Patterns)
-  - [System Design's](#System Design's)
-[SpringBootTutorial](#SpringBootTutorial)
+    - [Creational Patterns](#creational-patterns)
+    - [Structural Patterns](#structural-patterns)
+    - [Behavioral Patterns](#behavioral-patterns)
+  - [System Design's](#system-designs)
+[Spring Boot Tutorial](#SpringBootTutorial)
 
-# JavaTutorials
+# Java Tutorials
 ## Algorithms
 ### Searching
 ### Sorting
@@ -18,5 +18,5 @@
 ### Structural Patterns
 ### Behavioral Patterns
 ## System Design's
-# SpringBootTutorial
+# Spring Boot Tutorial
 ## 
