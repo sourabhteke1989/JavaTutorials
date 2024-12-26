@@ -2,7 +2,7 @@
   - [Algorithms](#Algorithms)
     - [Searching](#Searching)
     - [Sorting](#Sorting)
-  - [Design Patterns](#Design Patterns)
+  - [Design Patterns](#design-patterns)
     - [Creational Patterns](#Creational Patterns)
     - [Structural Patterns](#Structural Patterns)
     - [Behavioral Patterns](#Behavioral Patterns)
