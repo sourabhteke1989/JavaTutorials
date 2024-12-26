@@ -1,0 +1,106 @@
+Reference document - https://dev.to/bowmanjd/install-docker-on-windows-wsl-without-docker-desktop-34m9
+  https://docs.docker.com/engine/install/ubuntu/#installation-methods
+
+Prerequisites
+1. In power shell, run below command to Enable WSL
+    $dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+
+2. Enable virtual machine feature 
+    $dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+
+3. Restart machine to enable WSL feature properly
+
+WSL Setup
+1. List WSL Version available
+    $wsl --list --online
+    
+2. Install Linux distribution
+    $wsl --install -d <Distribution Name>
+    
+3. Check WSL version and set it to WSL2
+    $wsl -l -v
+    $wsl --set-default-version 2
+    
+4. Set default user 
+    $printf "\n[user]\ndefault = myusername\n" | sudo tee -a /etc/wsl.conf
+    
+5. Update/upgrade packages
+    $sudo apt update && sudo apt upgrade
+  In case of error's follow below steps
+    $echo -e "[network]\ngenerateResolvConf = false" | sudo tee -a /etc/wsl.conf
+    $sudo unlink /etc/resolv.conf
+    $echo nameserver 8.8.8.8 | sudo tee /etc/resolv.conf
+    
+6. Remove residue
+    $sudo apt remove docker docker-engine docker.io containerd runc
+    
+7. Install dependencies
+    $sudo apt install --no-install-recommends apt-transport-https ca-certificates curl gnupg2
+    
+8. Switch to legacy iptables
+    $update-alternatives --config iptables
+    
+9. Ubuntu package repository configuration
+    $cat /etc/os-release
+    $curl -fsSL -k https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/trusted.gpg.d/docker.asc
+    
+  In case of any problem, 
+    $sudo vi /etc/apt/apt.conf.d/99verify-peer.conf
+  Add "Acquire { https::Verify-Peer false }" into file and save, this will resolve certificate issue
+    
+    $echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu jammy stable" | sudo tee /etc/apt/sources.list.d/docker.list
+    $sudo apt update
+
+10. Install Docker and Configure our user to work with Docker
+    $sudo apt install docker-ce docker-ce-cli containerd.io
+    $sudo usermod -aG docker $USER
+  Close WSL and run "groups" command, you should see "docker" group
+  
+11. Assign a group ID to Docker
+  Check if ID is available
+    $getent group | grep 36257 || echo "This ID is not in use."
+    $sudo groupmod -g 36257 docker
+    
+12. prepare a shared directory
+  Shutdown WSL After that, go back to the Ubuntu terminal and run:
+    $DOCKER_DIR=/mnt/wsl/shared-docker
+    $mkdir -pm o=,ug=rwx "$DOCKER_DIR"
+    $chgrp docker "$DOCKER_DIR"
+
+13. Configure dockerd to use the shared directory
+    $sudo vi /etc/docker/daemon.json
+  Add below content into file
+    {
+      "hosts": ["unix:///mnt/wsl/shared-docker/docker.sock"]
+    }
+    
+14. Launch dockerd
+    $sudo dockerd
+    
+15. Test docker
+  Open another terminal and first set "DOCKER_HOST" environment variable
+    $export DOCKER_HOST="unix:///mnt/wsl/shared-docker/docker.sock"
+  Try docker cli
+    $docker run --rm hello-world
+  In case of "tls: failed to verify certificate: x509" issue, follow below steps
+    $openssl s_client -connect registry-1.docker.io:443 -showcerts
+  It shows all the certificates. Copy all parts that start and end with these (including the BEGIN and END CERTIFICATE rows):
+    $sudo vi /usr/local/share/ca-certificates/proxy1.crt
+  Now run below command to update all certificates
+    $sudo update-ca-certificates
+    
+16. Launch script for dockerd
+  Following lines can be placed in .bashrc or .profile, Run command "wsl -l -q" in power shell in order to set value for "DOCKER_DISTRO"
+    DOCKER_DISTRO="Ubuntu-22.04"
+    DOCKER_DIR=/mnt/wsl/shared-docker
+    DOCKER_SOCK="$DOCKER_DIR/docker.sock"
+    export DOCKER_HOST="unix://$DOCKER_SOCK"
+    if [ ! -S "$DOCKER_SOCK" ]; then
+        mkdir -pm o=,ug=rwx "$DOCKER_DIR"
+        chgrp docker "$DOCKER_DIR"
+        /mnt/c/Windows/System32/wsl.exe -d $DOCKER_DISTRO sh -c "nohup sudo -b dockerd < /dev/null > $DOCKER_DIR/dockerd.log 2>&1"
+    fi
+  
+  you may want to create a script with above contents "~/bin/docker-service", so that you can run docker-service only when you want, manually.
+  
+

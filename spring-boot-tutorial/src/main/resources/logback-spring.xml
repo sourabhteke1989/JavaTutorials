@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+  <springProfile name="dev | test">
+
+    <logger level="INFO" name="org.apache"/>
+    <logger level="INFO" name="org.apache.activemq"/>
+    <logger level="INFO" name="org.springframework"/>
+    <logger level="OFF" name="org.apache.kafka.clients.NetworkClient"/>
+    <root level="DEBUG">
+      <appender-ref ref="CONSOLE"/>
+    </root>
+  </springProfile>
+
+  <springProfile name="prod">
+
+    <appender class="ch.qos.logback.core.rolling.RollingFileAppender" name="FILE-ROLLING">
+      <encoder>
+        <!-- Using log pattern from default logback -->
+        <pattern>${FILE_LOG_PATTERN}</pattern>
+      </encoder>
+      <file>spring-boot-tutorial.log</file>
+      <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+        <maxFileSize>10MB</maxFileSize>
+        <maxHistory>60</maxHistory>
+        <totalSizeCap>2GB</totalSizeCap>
+      </rollingPolicy>
+    </appender>
+
+    <appender class="ch.qos.logback.classic.AsyncAppender" name="ASYNC">
+      <appender-ref ref="FILE-ROLLING"/>
+    </appender>
+
+    <logger level="ERROR" name="org.apache"/>
+    <logger level="INFO" name="org.apache.activemq"/>
+    <logger level="INFO" name="org.springframework"/>
+    <root level="INFO">
+      <appender-ref ref="CONSOLE"/>
+      <appender-ref ref="ASYNC"/>
+    </root>
+  </springProfile>
+</configuration>

@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.maxlogic.springboottutorial.kafka.config.KafkaConfiguration,\
+com.maxlogic.springboottutorial.kafka.config.KafkaTestConfiguration

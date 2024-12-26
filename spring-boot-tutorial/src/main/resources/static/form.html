@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>form-example</title>
+  <br />
+    <H4>Form data to spring MultiValueMap example</H4>
+    <form action="/login" method="post">
+      <label>Username: </label> <input name="userName" type="text">
+      <label>Password: </label> <input name="password" type="password">
+      <input type="submit" value="Login"/>
+    </form>
+  <br />
+    <H4>Form data to Object in spring controller example</H4>
+    <form action="/login2" method="post">
+      <label>Username: </label> <input name="userName" type="text">
+      <label>Password: </label> <input name="password" type="password">
+      <input type="submit" value="Login"/>
+    </form>
+  <br/>
+    <H4>URL & Path param example</H4>
+    <a href="/login3/abc?password=abc">Login link</a>
+  <br/>
+    <H4>Create user API test</H4>
+    <form action="/createUserForm" method="post">
+      <label>Username: </label> <input name="userName" type="text">
+      <label>Password: </label> <input name="password" type="password">
+      <input type="submit" value="Create User"/>
+    </form>
+  <br/>
+    <H4>Get user by ID as Json</H4>
+    <form action="/user" method="get">
+      <label>ID: </label><input name="id" type="number">
+      <input type="submit" value="Get User">
+    </form>
+  <br/>
+    <H4>File Upload/Downloadexample</H4>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" id="file">
+      <input type="submit" value="Upload file">
+    </form>
+    <a href="/get_files" >get all files</a>
+    <form action="/file/name" method="get" >
+      <label>File name:</label><input type="text" name="fileName">
+      <input type="submit" value="Download file">
+    </form>
+  <br/>
+<body>
+
+</body>
+</html>
