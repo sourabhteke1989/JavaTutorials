@@ -1,4 +1,4 @@
-[Java Tutorials](#JavaTutorials)
+- [Java Tutorials](#JavaTutorials)
   - [Algorithms](#Algorithms)
     - [Searching](#Searching)
     - [Sorting](#Sorting)
@@ -7,7 +7,7 @@
     - [Structural Patterns](#structural-patterns)
     - [Behavioral Patterns](#behavioral-patterns)
   - [System Design's](#system-designs)
-[Spring Boot Tutorial](##spring-boot-tutorial)
+- [Spring Boot Tutorial](##spring-boot-tutorial)
 
 # Java Tutorials
 ## Algorithms
