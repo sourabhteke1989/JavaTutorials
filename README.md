@@ -21,4 +21,4 @@
 ## System Design's
 # Spring Boot Tutorial
 ## Spring Boot Micrometer, Prometheus and Grafana Tutorial
-  [Link](https://github.com/sourabhteke1989/Tutorials/tree/master/spring-micrometer-prometheus-graphana)
+  [Link](https://github.com/sourabhteke1989/Tutorials/tree/master/SpringBootTutorials/spring-micrometer-prometheus-graphana)
