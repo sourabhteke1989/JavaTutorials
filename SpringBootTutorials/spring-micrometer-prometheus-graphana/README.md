@@ -44,5 +44,4 @@ Prometheus configuration is located at `config/prometheus/prometheus.yml`.
 
 ## License
 
-This project is licensed under the MIT License.
 
