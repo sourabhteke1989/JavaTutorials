@@ -8,7 +8,7 @@
     - [Behavioral Patterns](#behavioral-patterns)
   - [System Design's](#system-designs)
 - [Spring Boot Tutorial](#spring-boot-tutorial)
-  - [Spring Boot Micrometer, Prometheus and Grafana Tutorial]
+  - [Spring Boot Micrometer, Prometheus and Grafana Tutorial](#spring-boot-micrometer-prometheus-and-grafana-tutorial)
 
 # Java Tutorials
 ## Algorithms
