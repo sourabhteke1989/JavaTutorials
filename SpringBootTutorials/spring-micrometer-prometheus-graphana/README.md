@@ -33,9 +33,58 @@ This project demonstrates how to integrate Spring Boot with Micrometer, Promethe
 - **Hello Endpoint:** `http://localhost:8080/hello`
 - **Prometheus Metrics:** `http://localhost:8080/actuator/prometheus`
 
+## Implementation Details
+
+### SampleController
+
+The `SampleController` class exposes a `/hello` endpoint and tracks metrics using Micrometer.
+
+- **Counter:** Tracks the number of times the `/hello` endpoint is accessed.
+- **Timer:** Measures the time taken to process requests to the `/hello` endpoint.
+
 ## Configuration
 
 Prometheus configuration is located at `config/prometheus/prometheus.yml`.
+
+### Distribution Metrics
+
+The application is configured to collect distribution metrics for HTTP server requests with the following buckets:
+
+- 10ms
+- 25ms
+- 50ms
+- 100ms
+- 200ms
+- 500ms
+- 1s
+- 2s
+- 5s
+- 10s
+
+These buckets help in understanding the latency distribution of the requests.
+
+### Application Properties
+
+The following properties are added to `application.properties` to expose Prometheus metrics:
+
+```properties
+# Expose Prometheus metrics endpoint
+management.endpoints.web.exposure.include=*
+# Show detailed health information
+management.endpoint.health.show-details=always
+# Add application name as a tag to all metrics
+management.metrics.tags.application=${spring.application.name}
+# Enable Prometheus endpoint
+management.endpoint.prometheus.enabled=true
+# Enable Prometheus metrics export
+management.prometheus.metrics.export.enabled=true
+# Define minimum expected value for HTTP server requests
+management.metrics.distribution.minimum-expected-value.http.server.requests=10ms
+# Define maximum expected value for HTTP server requests
+management.metrics.distribution.maximum-expected-value.http.server.requests=10s
+# Define Service Level Objectives (SLO) for HTTP server requests
+management.metrics.distribution.slo.http.server.requests=10ms,25ms,50ms,100ms,200ms,500ms,1s,2s,5s,10s
+```
 
 ## Monitoring
 
