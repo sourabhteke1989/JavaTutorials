@@ -91,6 +91,14 @@ management.metrics.distribution.slo.http.server.requests=10ms,25ms,50ms,100ms,20
 1. **Prometheus:** Access Prometheus at `http://localhost:9090` to view metrics.
 2. **Grafana:** Access Grafana at `http://localhost:3000` to create dashboards and visualize metrics.
 
+### Prometheus Queries
+
+To check specific metrics in Prometheus, you can use the following queries:
+
+- **HTTP Server Requests:** `http_server_requests_seconds_bucket{uri="/hello"}`
+- **Hello Requests Timer:** `hello_requests_timer_seconds_bucket{le="1.0"}`
+- **Hello Requests Total:** `hello_requests_total{job="spring-micrometer-prometheus-grafana"}`
+
 ## License
 
 
