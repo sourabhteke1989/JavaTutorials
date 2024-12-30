@@ -31,6 +31,19 @@ The `AuthController` handles authentication and user registration requests. It p
 - `POST /login`: Authenticates the user and returns a JWT token.
 - `POST /admin/register-user`: Registers a new user with the specified roles and permissions.
 
+## Postman Collection
+
+A Postman collection is included in the project to help you test the API endpoints. You can find the collection file at `postman/spring-security-jwt-tutorial.postman_collection.json`.
+
+### Using the Collection
+
+The collection includes the following requests:
+- `login`: Authenticates the user and retrieves a JWT token.
+- `Authenticated hello`: Sends a GET request to a protected endpoint using the JWT token.
+- `Register new admin user`: Registers a new admin user with the specified roles.
+
+Make sure to update the `token` variable in the collection with the JWT token obtained from the `login` request.
+
 ## Usage
 
 1. Clone the repository.
