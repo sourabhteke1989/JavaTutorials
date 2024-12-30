@@ -33,7 +33,7 @@ The `AuthController` handles authentication and user registration requests. It p
 ## Endpoints
 
 - `POST /login`: Authenticates the user and generates a JWT token for the authenticated user. (Handled by `HttpSecurity#formLogin` in `SecurityConfig`)
-- `POST /admin/register-user`: Registers a new user with the specified roles and permissions.
+- `POST /admin/register-user`: Registers a new user with the specified roles and permissions. (Only user's having "ADMIN" role will be able to access this end point)
 
 ## Postman Collection
 
@@ -42,11 +42,12 @@ A Postman collection is included in the project to help you test the API endpoin
 ### Using the Collection
 
 The collection includes the following requests:
-- `Generate Token`: Generates a JWT token for the authenticated user.
+- `login`: Authenticates the user and generates a JWT token.
 - `Authenticated hello`: Sends a GET request to a protected endpoint using the JWT token.
 - `Register new admin user`: Registers a new admin user with the specified roles.
+- `Register new user`: Registers a new user with the specified roles.
 
-Make sure to update the `token` variable in the collection with the JWT token obtained from the `Generate Token` request.
+The `login` request automatically saves the JWT token to a collection variable named `token`. This token is then used in the `Authenticated hello`, `Register new admin user`, and `Register new user` requests.
 
 ## Usage
 
@@ -54,7 +55,7 @@ Make sure to update the `token` variable in the collection with the JWT token ob
 2. Configure the application properties as needed.
 3. Run the application.
 4. Use the `/login` endpoint to authenticate and receive a JWT token.
-5. Use the `/admin/register-user` endpoint to register new users.
+5. Use the `/admin/register-user` endpoint to register new users. (Only user's having "ADMIN" role will be able to access this end point)
 6. Use the `/hello` endpoint to check if the JWT token generated is authenticated.
 
 ## Example
