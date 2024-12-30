@@ -13,10 +13,14 @@ The `JwtTokenProvider` is responsible for generating and validating JWT tokens. 
 The `SecurityConfig` class configures the security settings for the application. It defines the security filter chain, authentication manager, and user details service. It also sets up the `AuthFilter` to intercept requests and validate JWT tokens.
 
 The `securityFilterChain` method in `SecurityConfig` class configures the following request matchers:
-- `POST /login`: Permits all requests.
 - `/actuator/**`: Permits all requests.
+- `/login-failure`: Permits all requests.
 - `/admin/**`: Requires the user to have the `ADMIN` role.
 - Any other request: Requires authentication.
+
+It also configures `HttpSecurity#formLogin` to handle the `/login` endpoint:
+- On successful login, it forwards the request to `/generate-token`.
+- On login failure, it forwards the request to `/login-failure`.
 
 ### AuthFilter
 
@@ -24,11 +28,11 @@ The `AuthFilter` is a custom filter that extends `OncePerRequestFilter`. It extr
 
 ### AuthController
 
-The `AuthController` handles authentication and user registration requests. It provides endpoints for logging in and registering new users. Upon successful login, it generates a JWT token and returns it in the response.
+The `AuthController` handles authentication and user registration requests. It provides endpoints for generating tokens and registering new users. Upon successful login, it generates a JWT token and returns it in the response.
 
 ## Endpoints
 
-- `POST /login`: Authenticates the user and returns a JWT token.
+- `POST /login`: Authenticates the user and generates a JWT token for the authenticated user. (Handled by `HttpSecurity#formLogin` in `SecurityConfig`)
 - `POST /admin/register-user`: Registers a new user with the specified roles and permissions.
 
 ## Postman Collection
@@ -38,11 +42,11 @@ A Postman collection is included in the project to help you test the API endpoin
 ### Using the Collection
 
 The collection includes the following requests:
-- `login`: Authenticates the user and retrieves a JWT token.
+- `Generate Token`: Generates a JWT token for the authenticated user.
 - `Authenticated hello`: Sends a GET request to a protected endpoint using the JWT token.
 - `Register new admin user`: Registers a new admin user with the specified roles.
 
-Make sure to update the `token` variable in the collection with the JWT token obtained from the `login` request.
+Make sure to update the `token` variable in the collection with the JWT token obtained from the `Generate Token` request.
 
 ## Usage
 
@@ -51,16 +55,25 @@ Make sure to update the `token` variable in the collection with the JWT token ob
 3. Run the application.
 4. Use the `/login` endpoint to authenticate and receive a JWT token.
 5. Use the `/admin/register-user` endpoint to register new users.
+6. Use the `/hello` endpoint to check if the JWT token generated is authenticated.
 
 ## Example
 
 ### Login Request
 
+To authenticate, send a POST request with form data containing the `username` and `password` fields.
+
 ```json
 {
-  "username": "user",
-  "password": "password"
+    "username": "user",
+    "password": "password"
 }
+```
+
+Example using `curl`:
+
+```sh
+curl -X POST http://localhost:8080/login -d "username=user&password=password"
 ```
 
 ### Login Response
@@ -79,7 +92,7 @@ Make sure to update the `token` variable in the collection with the JWT token ob
   "username": "newuser",
   "password": "newpassword",
   "roles": ["USER"],
-  "permissions": ["READ_PRIVILEGES"]  //Optional
+  "permissions": ["READ_PRIVILEGES"]  // Optional
 }
 ```
 

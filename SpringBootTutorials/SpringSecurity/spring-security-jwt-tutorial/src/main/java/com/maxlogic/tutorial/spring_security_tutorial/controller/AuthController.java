@@ -1,6 +1,7 @@
 package com.maxlogic.tutorial.spring_security_tutorial.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maxlogic.tutorial.spring_security_tutorial.auth.jwt.JwtTokenProvider;
@@ -33,6 +35,26 @@ public class AuthController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @PostMapping("/generate-token")
+    public ResponseEntity<LoginResponse> generateToken(@RequestParam String username) {
+        log.info("Generate token request: {}", username);
+        return ResponseEntity.ok().body(
+                new LoginResponse(username, jwtTokenProvider.generateToken(username)));
+    }
+
+    @PostMapping("/login-failure")
+    public ResponseEntity<String> postMethodName(@RequestBody String entity) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
+    }
+
+    /**
+     * This will never be used as we have implemented formLogin
+     * (UsernamePasswordAuthenticationFilter) as part of spring security
+     * configuration
+     * 
+     * @param loginRequest
+     * @return
+     */
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         log.info("User login request: {}", loginRequest.username);
@@ -42,7 +64,8 @@ public class AuthController {
         if (authenticationResponse.isAuthenticated()) {
             log.info("User login success: {}", loginRequest.username);
             return ResponseEntity.ok().body(
-                    new LoginResponse(loginRequest.username, jwtTokenProvider.generateToken(authenticationRequest)));
+                    new LoginResponse(loginRequest.username,
+                            jwtTokenProvider.generateToken(authenticationRequest.getName())));
         }
         log.info("User login failed: {}", loginRequest.username);
         return ResponseEntity.badRequest().build();

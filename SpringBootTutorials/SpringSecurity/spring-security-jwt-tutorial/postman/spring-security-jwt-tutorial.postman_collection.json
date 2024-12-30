@@ -29,13 +29,19 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\" : \"sourabh\",\r\n    \"password\" : \"sourabh\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "sourabh",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "sourabh",
+							"type": "text"
 						}
-					}
+					]
 				},
 				"url": {
 					"raw": "http://localhost:8080/login",
@@ -90,6 +96,41 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"admin\",\r\n    \"roles\" : [\"ADMIN\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/register-user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"register-user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register new user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"user\",\r\n    \"password\" : \"user\",\r\n    \"roles\" : [\"USER\"]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

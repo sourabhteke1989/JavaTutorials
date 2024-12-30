@@ -2,7 +2,6 @@ package com.maxlogic.tutorial.spring_security_tutorial.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,12 +29,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthFilter authFilter) throws Exception {
-        http.authorizeHttpRequests(
-                authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated())
+        http.formLogin(form -> form.successForwardUrl("/generate-token").failureForwardUrl("/login-failure"))
+                .authorizeHttpRequests(
+                        authorize -> authorize
+                                // Not allowing access to login end point for unauthenticated users, and added
+                                // formLogin (UsernamePasswordAuthenticationFilter) instead, so that user trying
+                                // to access login end point will be authentication using
+                                // UsernamePasswordAuthenticationFilter, and we dont need to write logic in
+                                // controller to authenticate user, instead we can just create JWT token.
+                                // .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                                .requestMatchers("/actuator/**", "/login-failure").permitAll()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated())
                 .csrf(csrf -> csrf.disable())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
@@ -64,4 +69,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // Uses BCrypt algorithm to hash passwords
     }
+
 }
