@@ -8,6 +8,6 @@
 ### [Behavioral Patterns](#behavioral-patterns)
 ## [System Design's](#system-designs)
 # [Spring Boot Tutorial](#spring-boot-tutorial)
-## [Spring Micrometer, Prometheus and Grafana Tutorial](https://github.com/sourabhteke1989/Tutorials/tree/master/SpringBootTutorials/spring-micrometer-prometheus-graphana)
+## [Spring Micrometer, Prometheus and Grafana Tutorial](https://github.com/sourabhteke1989/Tutorials/tree/master/SpringBootTutorials/spring-micrometer-prometheus-graphana#spring-micrometer-prometheus-grafana-tutorial)
 ## Spring Security
 ### [Spring Security JWT Tutorial](https://github.com/sourabhteke1989/Tutorials/tree/master/SpringBootTutorials/SpringSecurity/spring-security-jwt-tutorial#spring-security-jwt-tutorial) 
